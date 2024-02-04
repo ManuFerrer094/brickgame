@@ -2,30 +2,46 @@
  * Detecta colisiones entre la pelota y los ladrillos.
  */
 function collisionDetection() {
+    var ladrillosRestantes = 0; // Contador para ladrillos restantes
+
     for (c = 0; c < brickColumnCount; c++) {
         for (r = 0; r < brickRowCount; r++) {
             var b = bricks[c][r];
             if (b.status == 1) {
+                ladrillosRestantes++; // Incrementa el contador de ladrillos restantes
                 if (
                     x > b.x &&
                     x < b.x + brickWidth &&
                     y > b.y &&
                     y < b.y + brickHeight
                 ) {
-                    // Cambia la dirección vertical de la pelota
                     dy = -dy;
-                    // Desactiva el ladrillo
                     b.status = 0;
-                    // Incrementa la puntuación
                     puntuacion++;
-                    // Verifica si se han eliminado todos los ladrillos
-                    if (puntuacion == brickRowCount * brickColumnCount) {
-                        // Muestra un mensaje de victoria y reinicia el juego
-                        alert("¡HAS GANADO, ENHORABUENA!");
-                        document.location.reload();
-                    }
                 }
             }
+        }
+    }
+
+    if (ladrillosRestantes == 0) {
+        iniciarNuevoNivel(); // Llama a la función para iniciar un nuevo nivel
+    }
+}
+
+function resetearPelotaYPaleta() {
+    x = canvas.width / 2;
+    y = canvas.height - 30;
+    dx = 2;
+    dy = -2;
+    paddleX = (canvas.width - paddleWidth) / 2;
+}
+
+function crearLadrillos() {
+    bricks = [];
+    for (var c = 0; c < brickColumnCount; c++) {
+        bricks[c] = [];
+        for (var r = 0; r < brickRowCount; r++) {
+            bricks[c][r] = { x: 0, y: 0, status: 1 };
         }
     }
 }
@@ -140,6 +156,3 @@ function draw() {
 
     requestAnimationFrame(draw);
 }
-
-// Inicia el juego llamando a la función de dibujo
-draw();
