@@ -49,6 +49,7 @@ function collisionDetection() {
     }
 
     if (ladrillosRestantes == 0) {
+        mostrarButtonCanvas();
         iniciarNuevoNivel(); 
     }
 }
@@ -138,7 +139,7 @@ function draw() {
         } else {
             vidas--;
             if (!vidas) {
-                alert("GAME OVER");
+                mostrarButtonCanvas();
                 document.location.reload();
             } else {
                 x = canvas.width / 2;

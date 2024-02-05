@@ -1,10 +1,15 @@
-body, canvas {
-    padding: 0;
-    margin: 0;
+#myCanvas,
+#buttonCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ccc;
 }
 
-canvas {
-    background: #eee;
-    display: block;
-    margin: 0 auto;
+#myCanvas {
+    z-index: 1; /* Coloca el canvas myCanvas detrás del buttonCanvas */
+}
+
+#buttonCanvas {
+    z-index: 2; /* Coloca el canvas buttonCanvas encima de myCanvas */
 }
