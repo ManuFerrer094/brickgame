@@ -10,14 +10,13 @@ function drawPowerUps() {
     }
 }
 
-
 function collisionDetection() {
     var ladrillosRestantes = 0;
 
     for (c = 0; c < brickColumnCount; c++) {
         for (r = 0; r < brickRowCount; r++) {
             var b = bricks[c][r];
-            if (b.status == 1) {
+            if (b.status !== 0) { // Verificar si el ladrillo está activo (no destruido)
                 ladrillosRestantes++;
                 if (
                     x > b.x &&
@@ -26,8 +25,21 @@ function collisionDetection() {
                     y < b.y + brickHeight
                 ) {
                     dy = -dy;
-                    b.status = 0;
-                    puntuacion++;
+                    if (b.status === NORMAL_BRICK) {
+                        b.status = 0; // Si es un ladrillo normal, se destruye de inmediato
+                        puntuacion++; // Incrementar la puntuación al destruir un ladrillo
+                    } else if (b.status === REINFORCED_BRICK) {
+                        // Si es un ladrillo reforzado, se reduce su resistencia
+                        if (b.hits === undefined) {
+                            // Si es el primer golpe, cambia su color a marrón claro
+                            b.hits = 1;
+                            b.color = "#CD853F"; // Marrón claro
+                        } else {
+                            // Si es el segundo golpe, destruye el ladrillo
+                            b.status = 0;
+                            puntuacion++; // Incrementar la puntuación al destruir un ladrillo
+                        }
+                    }
                     if (puntuacion % 8 === 0) {
                         generatePowerUp(b.x, b.y);
                     }
@@ -49,18 +61,6 @@ function resetearPelotaYPaleta() {
     paddleX = (canvas.width - paddleWidth) / 2;
 }
 
-function crearLadrillos() {
-    bricks = [];
-    var maxFilas = Math.min(brickRowCount, 7);
-
-    for (var c = 0; c < brickColumnCount; c++) {
-        bricks[c] = [];
-        for (var r = 0; r < maxFilas; r++) {
-            bricks[c][r] = { x: 0, y: 0, status: 1 };
-        }
-    }
-}
-
 function drawPuntuacion() {
     ctx.font = "16px Arial";
     ctx.fillStyle = "#0095DD";
@@ -77,7 +77,7 @@ function drawVidas() {
 function drawBall() {
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-    ctx.fillStyle = "#0095DD";
+    ctx.fillStyle = "#998877";
     ctx.fill();
     ctx.closePath();
 }
@@ -97,16 +97,16 @@ function drawPaddle() {
  * Dibuja los ladrillos en el lienzo.
  */
 function drawBricks() {
-    for (c = 0; c < brickColumnCount; c++) {
-        for (r = 0; r < brickRowCount; r++) {
-            if (bricks[c][r].status == 1) {
+    for (var c = 0; c < brickColumnCount; c++) {
+        for (var r = 0; r < brickRowCount; r++) {
+            if (bricks[c][r].status !== 0) {
                 var brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
                 var brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
                 bricks[c][r].x = brickX;
                 bricks[c][r].y = brickY;
                 ctx.beginPath();
                 ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                ctx.fillStyle = "#0095DD";
+                ctx.fillStyle = bricks[c][r].status === NORMAL_BRICK ? "#0095DD" : "#8B4513";
                 ctx.fill();
                 ctx.closePath();
             }
