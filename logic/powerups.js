@@ -1,6 +1,6 @@
 
 function generatePowerUp() {
-    var type = Math.floor(Math.random() * 3); // Genera un número aleatorio entre 0 y 2 para determinar el tipo de power-up
+    var type = Math.floor(Math.random() * 3);
     powerUps.push({ x: x, y: y, type: type, activationTime: Date.now() });
 }
 
@@ -16,8 +16,6 @@ function updatePowerUps() {
     }
 }
 
-
-
 function paddlePowerUpCollision() {
     for (var i = 0; i < powerUps.length; i++) {
         var powerUp = powerUps[i];
@@ -32,7 +30,7 @@ function paddlePowerUpCollision() {
                     paddleWidth += 20;
                     setTimeout(function() {
                         paddleWidth -= 20;
-                    }, 10000);
+                    }, 7000);
                     break;
                 case 1:
                     dx *= 2;
@@ -40,9 +38,13 @@ function paddlePowerUpCollision() {
                     setTimeout(function() {
                         dx /= 2;
                         dy /= 2;
-                    }, 10000);
+                    }, 7000);
                     break;
                 case 2:
+                    paddleWidth -= 20;
+                    setTimeout(function() {
+                        paddleWidth += 20;
+                    }, 7000);
                     break;
                 default:
                     break;

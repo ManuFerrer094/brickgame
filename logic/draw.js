@@ -28,7 +28,7 @@ function collisionDetection() {
                     dy = -dy;
                     b.status = 0;
                     puntuacion++;
-                    if (puntuacion % 10 === 0) {
+                    if (puntuacion % 8 === 0) {
                         generatePowerUp(b.x, b.y);
                     }
                 }
