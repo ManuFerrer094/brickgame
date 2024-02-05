@@ -1,52 +1,57 @@
 
-function drawPuntuacion() {
+/**
+ * Dibuja la puntuación en el lienzo.
+ * @param {CanvasRenderingContext2D} ctx - Contexto del lienzo en el que se dibujará la puntuación.
+ * @param {number} puntuacion - Puntuación actual del jugador.
+ */
+function drawPuntuacion(ctx, puntuacion) {
     ctx.font = "16px Arial";
     ctx.fillStyle = "#0095DD";
     ctx.fillText("Puntuación: " + puntuacion, 8, 20);
 }
 
-function drawVidas() {
+/**
+ * Dibuja las vidas restantes en el lienzo.
+ * @param {CanvasRenderingContext2D} ctx - Contexto del lienzo en el que se dibujarán las vidas.
+ * @param {number} vidas - Cantidad de vidas restantes del jugador.
+ */
+function drawVidas(ctx, vidas) {
     ctx.font = "16px Arial";
     ctx.fillStyle = "#0095DD";
     ctx.fillText("Vidas: " + vidas, canvas.width - 65, 20);
 }
 
-// Función para dibujar el botón "Jugar" en el canvas de botones con texto
 function drawButton(texto) {
     var buttonCanvas = document.getElementById("buttonCanvas");
     var ctx = buttonCanvas.getContext("2d");
 
-    // Limpiar el canvas
     ctx.clearRect(0, 0, buttonCanvas.width, buttonCanvas.height);
 
-    // Dibujar el texto
     ctx.fillStyle = "black";
     ctx.font = "bold 24px Arial";
-    ctx.fillText(texto, 50, 50); // Posición del texto
+    ctx.fillText(texto, 50, 50);
     
-    // Dibujar el botón
     ctx.fillStyle = "blue";
-    ctx.fillRect(50, 50, 100, 50); // Coordenadas y tamaño del botón
+    ctx.fillRect(50, 50, 100, 50);
     ctx.fillStyle = "white";
     ctx.font = "20px Arial";
-    ctx.fillText("Jugar", 70, 85); // Texto del botón
+    ctx.fillText("Jugar", 70, 85);
 }
 
-// Llamar a la función para dibujar el botón cuando se cargue la página
 window.onload = function() {
-    drawButton("¿Quieres jugar?"); // Puedes cambiar el texto aquí
+    drawButton("¿Quieres jugar?");
 };
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawBricks();
-    drawBall();
-    drawPaddle();
+    drawBricks(ctx, brickWidth, brickHeight, brickPadding, brickOffsetTop, brickOffsetLeft, bricks, brickRowCount, brickColumnCount);
+    drawBall(ctx, x, y, ballRadius);
+    drawPaddle(ctx, paddleX, paddleHeight, paddleWidth);
     collisionDetection();
-    drawPuntuacion();
-    drawVidas();
-    drawPowerUps();
-    updatePowerUps();
+    drawPuntuacion(ctx, puntuacion);
+    drawVidas(ctx, vidas);
+    drawPowerUps(ctx, powerUps, powerUpWidth, powerUpHeight);
+    updatePowerUps(powerUps, powerUpSpeed, powerUpEffectDuration);
     paddlePowerUpCollision();
 
     if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {

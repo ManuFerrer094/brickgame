@@ -80,29 +80,16 @@ function keyUpHandler(e) {
     movePaddle(e);
 }
 
-// Agregar evento de clic al botón "Jugar"
 document.getElementById("buttonCanvas").addEventListener("click", function(event) {
     var rect = this.getBoundingClientRect();
     var mouseX = event.clientX - rect.left;
     var mouseY = event.clientY - rect.top;
 
-    // Verificar si se hizo clic dentro del área del botón
     if (mouseX >= 50 && mouseX <= 150 && mouseY >= 50 && mouseY <= 100) {
         if (!partidaIniciada) { 
             partidaIniciada = true;
             draw();
-            document.getElementById("buttonCanvas").style.display = "none"; // Ocultar el canvas de botones al iniciar el juego
-        }
-    }
-});
-
-// Agregar evento de clic al botón "Acabar nivel (SOLO DESARROLLO)"
-document.getElementById("finishLevelButton").addEventListener("click", function() {
-    if (partidaIniciada) {
-        for (c = 0; c < brickColumnCount; c++) {
-            for (r = 0; r < brickRowCount; r++) {
-                bricks[c][r].status = 0;
-            }
+            document.getElementById("buttonCanvas").style.display = "none";
         }
     }
 });

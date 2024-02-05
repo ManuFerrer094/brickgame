@@ -130,11 +130,9 @@ var vidas = 3;
  */
 var bricks = [];
 
-// Inicialización de la matriz de ladrillos
 for (var c = 0; c < brickColumnCount; c++) {
     bricks[c] = [];
     for (var r = 0; r < brickRowCount; r++) {
-        // Cada ladrillo tiene una posición (x, y) y un estado (activo o inactivo)
         bricks[c][r] = { x: 0, y: 0, status: 1 };
     }
 }

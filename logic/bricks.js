@@ -15,8 +15,17 @@ for (var c = 0; c < brickColumnCount; c++) {
 
 /**
  * Dibuja los ladrillos en el lienzo.
+ * @param {CanvasRenderingContext2D} ctx - Contexto del lienzo en el que se dibujarán los ladrillos.
+ * @param {number} brickWidth - Ancho de cada ladrillo.
+ * @param {number} brickHeight - Altura de cada ladrillo.
+ * @param {number} brickPadding - Espacio entre ladrillos.
+ * @param {number} brickOffsetTop - Margen superior para la primera fila de ladrillos.
+ * @param {number} brickOffsetLeft - Margen izquierdo para la primera columna de ladrillos.
+ * @param {array} bricks - Matriz que representa el estado de los ladrillos en el juego.
+ * @param {number} brickRowCount - Número de filas de ladrillos.
+ * @param {number} brickColumnCount - Número de columnas de ladrillos.
  */
-function drawBricks() {
+function drawBricks(ctx, brickWidth, brickHeight, brickPadding, brickOffsetTop, brickOffsetLeft, bricks, brickRowCount, brickColumnCount) {
     for (var c = 0; c < brickColumnCount; c++) {
         for (var r = 0; r < brickRowCount; r++) {
             if (bricks[c][r].status !== 0) {

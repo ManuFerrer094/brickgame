@@ -1,11 +1,23 @@
 
-function generatePowerUp() {
+/**
+ * Genera un nuevo power-up y lo añade al arreglo de power-ups.
+ * @param {number} x - Coordenada x donde se generará el power-up.
+ * @param {number} y - Coordenada y donde se generará el power-up.
+ * @param {array} powerUps - Arreglo que contiene la información de los power-ups.
+ */
+function generatePowerUp(x, y, powerUps) {
     var type = Math.floor(Math.random() * 3);
     powerUps.push({ x: x, y: y, type: type, activationTime: Date.now() });
 }
 
 
-function updatePowerUps() {
+/**
+ * Actualiza la posición y el estado de los power-ups en el juego.
+ * @param {array} powerUps - Arreglo que contiene la información de los power-ups.
+ * @param {number} powerUpSpeed - Velocidad a la que se mueven los power-ups en el juego.
+ * @param {number} powerUpEffectDuration - Duración del efecto activo de los power-ups.
+ */
+function updatePowerUps(powerUps, powerUpSpeed, powerUpEffectDuration) {
     for (var i = 0; i < powerUps.length; i++) {
         var powerUp = powerUps[i];
         powerUp.y += powerUpSpeed;
@@ -56,7 +68,14 @@ function paddlePowerUpCollision() {
     }
 }
 
-function drawPowerUps() {
+/**
+ * Dibuja los power-ups en el lienzo.
+ * @param {CanvasRenderingContext2D} ctx - Contexto del lienzo en el que se dibujarán los power-ups.
+ * @param {array} powerUps - Arreglo que contiene la información de los power-ups.
+ * @param {number} powerUpWidth - Ancho de cada power-up.
+ * @param {number} powerUpHeight - Altura de cada power-up.
+ */
+function drawPowerUps(ctx, powerUps, powerUpWidth, powerUpHeight) {
     for (var i = 0; i < powerUps.length; i++) {
         var powerUp = powerUps[i];
         ctx.beginPath();

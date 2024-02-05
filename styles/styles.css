@@ -7,9 +7,9 @@
 }
 
 #myCanvas {
-    z-index: 1; /* Coloca el canvas myCanvas detrás del buttonCanvas */
+    z-index: 1;
 }
 
 #buttonCanvas {
-    z-index: 2; /* Coloca el canvas buttonCanvas encima de myCanvas */
+    z-index: 2;
 }
