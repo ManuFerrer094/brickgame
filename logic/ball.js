@@ -1,19 +1,15 @@
 /**
  * Dibuja la pelota en el lienzo.
+ * @param {number} x - La coordenada x del centro de la pelota.
+ * @param {number} y - La coordenada y del centro de la pelota.
+ * @param {number} radius - El radio de la pelota.
+ * @param {string} color - El color de la pelota en formato hexadecimal.
+ * @param {CanvasRenderingContext2D} ctx - El contexto del lienzo en el que se dibuja la pelota.
  */
-function drawBall() {
-    // Inicia un nuevo trazo
+function drawBall(x, y, radius, color, ctx) {
     ctx.beginPath();
-
-    // Dibuja un círculo para representar la pelota
-    ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-
-    // Establece el color de relleno para la pelota
-    ctx.fillStyle = "#0095DD";
-
-    // Rellena el círculo con el color especificado
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fillStyle = color;
     ctx.fill();
-
-    // Cierra el trazo
     ctx.closePath();
 }

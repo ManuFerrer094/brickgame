@@ -1,14 +1,26 @@
-// Agrega event listeners para los eventos de teclado y ratón
+/**
+ * Event listener para el evento de presionar una tecla.
+ * @param {KeyboardEvent} e - El evento de teclado.
+ */
 document.addEventListener("keydown", keyDownHandler, false);
+
+/**
+ * Event listener para el evento de soltar una tecla.
+ * @param {KeyboardEvent} e - El evento de teclado.
+ */
 document.addEventListener("keyup", keyUpHandler, false);
+
+/**
+ * Event listener para el evento de mover el mouse.
+ * @param {MouseEvent} e - El evento de mouse.
+ */
 document.addEventListener("mousemove", mouseMoveHandler, false);
 
 /**
- * Maneja el movimiento del ratón y de las teclas para controlar la paleta.
- * @param {MouseEvent} e - Objeto de evento del ratón.
+ * Función para mover la paleta según el evento del teclado o del mouse.
+ * @param {Event} e - El evento que desencadenó el movimiento de la paleta.
  */
 function movePaddle(e) {
-    // Si se mueve con las teclas de flecha
     if (rightPressed || leftPressed) {
         if (rightPressed && paddleX < canvas.width - paddleWidth) {
             paddleX += 7;
@@ -16,7 +28,6 @@ function movePaddle(e) {
             paddleX -= 7;
         }
     }
-    // Si se mueve con el ratón
     else if (e.type === "mousemove") {
         var relativeX = e.clientX - canvas.offsetLeft;
         if (relativeX > 0 && relativeX < canvas.width) {
@@ -26,33 +37,27 @@ function movePaddle(e) {
 }
 
 /**
- * Maneja el movimiento del ratón para controlar la paleta.
- * @param {MouseEvent} e - Objeto de evento del ratón.
+ * Event listener para el movimiento del mouse.
+ * @param {MouseEvent} e - El evento de mouse.
  */
 function mouseMoveHandler(e) {
-    // Si se está moviendo con las teclas de flecha, no hace falta actualizar la posición con el ratón
     if (rightPressed || leftPressed) {
         return;
     }
 
-    // Calcula la posición relativa del ratón en el lienzo
     var relativeX = e.clientX - canvas.offsetLeft;
 
-    // Ajusta la posición de la paleta para seguir el movimiento del ratón,
-    // asegurándose de que no se salga de los límites del canvas
     paddleX = Math.max(0, Math.min(relativeX - paddleWidth / 2, canvas.width - paddleWidth));
 }
 
 /**
- * Maneja el evento de tecla presionada para controlar el movimiento de la paleta hacia la derecha o izquierda.
- * @param {KeyboardEvent} e - Objeto de evento de teclado.
+ * Event listener para el evento de presionar una tecla.
+ * @param {KeyboardEvent} e - El evento de teclado.
  */
 function keyDownHandler(e) {
-    // Verifica si la tecla presionada es la flecha derecha
     if (e.keyCode == 39) {
         rightPressed = true;
     }
-    // Verifica si la tecla presionada es la flecha izquierda
     else if (e.keyCode == 37) {
         leftPressed = true;
     }
@@ -61,15 +66,13 @@ function keyDownHandler(e) {
 }
 
 /**
- * Maneja el evento de tecla liberada para detener el movimiento de la paleta.
- * @param {KeyboardEvent} e - Objeto de evento de teclado.
+ * Event listener para el evento de soltar una tecla.
+ * @param {KeyboardEvent} e - El evento de teclado.
  */
 function keyUpHandler(e) {
-    // Verifica si la tecla liberada es la flecha derecha
     if (e.keyCode == 39) {
         rightPressed = false;
     }
-    // Verifica si la tecla liberada es la flecha izquierda
     else if (e.keyCode == 37) {
         leftPressed = false;
     }

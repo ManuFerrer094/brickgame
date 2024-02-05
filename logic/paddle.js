@@ -1,19 +1,15 @@
 /**
  * Dibuja la paleta en el lienzo.
+ * @param {CanvasRenderingContext2D} ctx - El contexto del lienzo en el que se dibuja la paleta.
+ * @param {number} paddleX - La posición horizontal de la paleta.
+ * @param {number} paddleHeight - La altura de la paleta.
+ * @param {number} paddleWidth - El ancho de la paleta.
+ * @param {number} canvasHeight - La altura del lienzo.
  */
-function drawPaddle() {
-    // Inicia un nuevo trazo
+function drawPaddle(ctx, paddleX, paddleHeight, paddleWidth, canvasHeight) {
     ctx.beginPath();
-
-    // Dibuja un rectángulo que representa la paleta
-    ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-
-    // Establece el color de relleno para la paleta
+    ctx.rect(paddleX, canvasHeight - paddleHeight, paddleWidth, paddleHeight);
     ctx.fillStyle = "#0095DD";
-
-    // Rellena el rectángulo con el color especificado
     ctx.fill();
-
-    // Cierra el trazo
     ctx.closePath();
 }
