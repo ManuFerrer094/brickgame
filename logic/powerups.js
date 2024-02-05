@@ -55,3 +55,14 @@ function paddlePowerUpCollision() {
         }
     }
 }
+
+function drawPowerUps() {
+    for (var i = 0; i < powerUps.length; i++) {
+        var powerUp = powerUps[i];
+        ctx.beginPath();
+        ctx.rect(powerUp.x, powerUp.y, powerUpWidth, powerUpHeight);
+        ctx.fillStyle = "#ff0000";
+        ctx.fill();
+        ctx.closePath();
+    }
+}

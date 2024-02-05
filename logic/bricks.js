@@ -13,6 +13,9 @@ for (var c = 0; c < brickColumnCount; c++) {
     }
 }
 
+/**
+ * Dibuja los ladrillos en el lienzo.
+ */
 function drawBricks() {
     for (var c = 0; c < brickColumnCount; c++) {
         for (var r = 0; r < brickRowCount; r++) {
@@ -23,8 +26,7 @@ function drawBricks() {
                 bricks[c][r].y = brickY;
                 ctx.beginPath();
                 ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                // Asignar colores diferentes según el tipo de ladrillo
-                ctx.fillStyle = bricks[c][r].status === NORMAL_BRICK ? "#0095DD" : "#8B4513"; // Azul para normales, marrón para reforzados
+                ctx.fillStyle = bricks[c][r].status === NORMAL_BRICK ? "#0095DD" : "#8C5668";
                 ctx.fill();
                 ctx.closePath();
             }

@@ -1,67 +1,4 @@
 
-function drawPowerUps() {
-    for (var i = 0; i < powerUps.length; i++) {
-        var powerUp = powerUps[i];
-        ctx.beginPath();
-        ctx.rect(powerUp.x, powerUp.y, powerUpWidth, powerUpHeight);
-        ctx.fillStyle = "#ff0000";
-        ctx.fill();
-        ctx.closePath();
-    }
-}
-
-function collisionDetection() {
-    var ladrillosRestantes = 0;
-
-    for (c = 0; c < brickColumnCount; c++) {
-        for (r = 0; r < brickRowCount; r++) {
-            var b = bricks[c][r];
-            if (b.status !== 0) { // Verificar si el ladrillo está activo (no destruido)
-                ladrillosRestantes++;
-                if (
-                    x > b.x &&
-                    x < b.x + brickWidth &&
-                    y > b.y &&
-                    y < b.y + brickHeight
-                ) {
-                    dy = -dy;
-                    if (b.status === NORMAL_BRICK) {
-                        b.status = 0; // Si es un ladrillo normal, se destruye de inmediato
-                        puntuacion++; // Incrementar la puntuación al destruir un ladrillo
-                    } else if (b.status === REINFORCED_BRICK) {
-                        // Si es un ladrillo reforzado, se reduce su resistencia
-                        if (b.hits === undefined) {
-                            // Si es el primer golpe, cambia su color a marrón claro
-                            b.hits = 1;
-                            b.color = "#CD853F"; // Marrón claro
-                        } else {
-                            // Si es el segundo golpe, destruye el ladrillo
-                            b.status = 0;
-                            puntuacion++; // Incrementar la puntuación al destruir un ladrillo
-                        }
-                    }
-                    if (puntuacion % 8 === 0) {
-                        generatePowerUp(b.x, b.y);
-                    }
-                }
-            }
-        }
-    }
-
-    if (ladrillosRestantes == 0) {
-        mostrarButtonCanvas();
-        iniciarNuevoNivel(); 
-    }
-}
-
-function resetearPelotaYPaleta() {
-    x = canvas.width / 2;
-    y = canvas.height - 30;
-    dx = 2;
-    dy = -2;
-    paddleX = (canvas.width - paddleWidth) / 2;
-}
-
 function drawPuntuacion() {
     ctx.font = "16px Arial";
     ctx.fillStyle = "#0095DD";
@@ -74,46 +11,31 @@ function drawVidas() {
     ctx.fillText("Vidas: " + vidas, canvas.width - 65, 20);
 }
 
+// Función para dibujar el botón "Jugar" en el canvas de botones con texto
+function drawButton(texto) {
+    var buttonCanvas = document.getElementById("buttonCanvas");
+    var ctx = buttonCanvas.getContext("2d");
 
-function drawBall() {
-    ctx.beginPath();
-    ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-    ctx.fillStyle = "#998877";
-    ctx.fill();
-    ctx.closePath();
+    // Limpiar el canvas
+    ctx.clearRect(0, 0, buttonCanvas.width, buttonCanvas.height);
+
+    // Dibujar el texto
+    ctx.fillStyle = "black";
+    ctx.font = "bold 24px Arial";
+    ctx.fillText(texto, 50, 50); // Posición del texto
+    
+    // Dibujar el botón
+    ctx.fillStyle = "blue";
+    ctx.fillRect(50, 50, 100, 50); // Coordenadas y tamaño del botón
+    ctx.fillStyle = "white";
+    ctx.font = "20px Arial";
+    ctx.fillText("Jugar", 70, 85); // Texto del botón
 }
 
-/**
- * Dibuja la paleta en el lienzo.
- */
-function drawPaddle() {
-    ctx.beginPath();
-    ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-    ctx.fillStyle = "#0095DD";
-    ctx.fill();
-    ctx.closePath();
-}
-
-/**
- * Dibuja los ladrillos en el lienzo.
- */
-function drawBricks() {
-    for (var c = 0; c < brickColumnCount; c++) {
-        for (var r = 0; r < brickRowCount; r++) {
-            if (bricks[c][r].status !== 0) {
-                var brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
-                var brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
-                bricks[c][r].x = brickX;
-                bricks[c][r].y = brickY;
-                ctx.beginPath();
-                ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                ctx.fillStyle = bricks[c][r].status === NORMAL_BRICK ? "#0095DD" : "#8B4513";
-                ctx.fill();
-                ctx.closePath();
-            }
-        }
-    }
-}
+// Llamar a la función para dibujar el botón cuando se cargue la página
+window.onload = function() {
+    drawButton("¿Quieres jugar?"); // Puedes cambiar el texto aquí
+};
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -139,7 +61,6 @@ function draw() {
         } else {
             vidas--;
             if (!vidas) {
-                mostrarButtonCanvas();
                 document.location.reload();
             } else {
                 x = canvas.width / 2;

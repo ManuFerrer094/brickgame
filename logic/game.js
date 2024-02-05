@@ -1,21 +1,61 @@
 var nivelActual = 1;
 var partidaIniciada = false;
 
-// Dibujar el botón "Jugar" en el canvas de botones
-function drawButton() {
+function collisionDetection() {
+    var ladrillosRestantes = 0;
+
+    for (c = 0; c < brickColumnCount; c++) {
+        for (r = 0; r < brickRowCount; r++) {
+            var b = bricks[c][r];
+            if (b.status !== 0) { // Verificar si el ladrillo está activo (no destruido)
+                ladrillosRestantes++;
+                if (
+                    x > b.x &&
+                    x < b.x + brickWidth &&
+                    y > b.y &&
+                    y < b.y + brickHeight
+                ) {
+                    dy = -dy;
+                    if (b.status === NORMAL_BRICK) {
+                        b.status = 0; // Si es un ladrillo normal, se destruye de inmediato
+                        puntuacion++; // Incrementar la puntuación al destruir un ladrillo
+                    } else if (b.status === REINFORCED_BRICK) {
+                        // Si es un ladrillo reforzado, se reduce su resistencia
+                        if (b.hits === undefined) {
+                            // Si es el primer golpe, cambia su color a marrón claro
+                            b.hits = 1;
+                            b.color = "#CD853F"; // Marrón claro
+                        } else {
+                            // Si es el segundo golpe, destruye el ladrillo
+                            b.status = 0;
+                            puntuacion++; // Incrementar la puntuación al destruir un ladrillo
+                        }
+                    }
+                    if (puntuacion % 8 === 0) {
+                        generatePowerUp(b.x, b.y);
+                    }
+                }
+            }
+        }
+    }
+
+    if (ladrillosRestantes == 0) {
+        mostrarButtonCanvas("Enhorabuena, ¿Seguir jugando?");
+        iniciarNuevoNivel(); 
+    }
+}
+
+// Función para mostrar el canvas de botones con texto y botón de jugar
+function mostrarButtonCanvas(texto) {
     var buttonCanvas = document.getElementById("buttonCanvas");
     var ctx = buttonCanvas.getContext("2d");
     
-    // Dibujar el botón
-    ctx.fillStyle = "blue";
-    ctx.fillRect(50, 50, 100, 50); // Coordenadas y tamaño del botón
-    ctx.fillStyle = "white";
-    ctx.font = "20px Arial";
-    ctx.fillText("Jugar", 70, 85); // Texto del botón
+    // Mostrar el canvas
+    buttonCanvas.style.display = "block";
+    
+    // Llamar a la función para dibujar el texto y el botón
+    drawButton(texto);
 }
-
-// Llamar a la función para dibujar el botón cuando se cargue la página
-window.onload = drawButton;
 
 // Inicialización de ladrillos para cada nivel
 function initBricksForLevel(level) {
@@ -40,6 +80,14 @@ function initBricksForLevel(level) {
     return bricks;
 }
 
+function resetearPelotaYPaleta() {
+    x = canvas.width / 2;
+    y = canvas.height - 30;
+    dx = 2;
+    dy = -2;
+    paddleX = (canvas.width - paddleWidth) / 2;
+}
+
 function iniciarNuevoNivel() {
     nivelActual++;
     brickRowCount++;
@@ -48,42 +96,3 @@ function iniciarNuevoNivel() {
     partidaIniciada = false; // Marcar la partida como no iniciada
     cancelAnimationFrame(animationId); // Cancelar cualquier animación en curso
 }
-
-// Función para mostrar el canvas de botones con texto y botón de jugar
-function mostrarButtonCanvas(texto) {
-    var buttonCanvas = document.getElementById("buttonCanvas");
-    var ctx = buttonCanvas.getContext("2d");
-    
-    // Mostrar el canvas
-    buttonCanvas.style.display = "block";
-    
-    // Llamar a la función para dibujar el texto y el botón
-    drawButton(ctx, texto);
-}
-
-// Agregar evento de clic al botón "Jugar"
-document.getElementById("buttonCanvas").addEventListener("click", function(event) {
-    var rect = this.getBoundingClientRect();
-    var mouseX = event.clientX - rect.left;
-    var mouseY = event.clientY - rect.top;
-
-    // Verificar si se hizo clic dentro del área del botón
-    if (mouseX >= 50 && mouseX <= 150 && mouseY >= 50 && mouseY <= 100) {
-        if (!partidaIniciada) { 
-            partidaIniciada = true;
-            draw();
-            document.getElementById("buttonCanvas").style.display = "none"; // Ocultar el canvas de botones al iniciar el juego
-        }
-    }
-});
-
-// Agregar evento de clic al botón "Acabar nivel (SOLO DESARROLLO)"
-document.getElementById("finishLevelButton").addEventListener("click", function() {
-    if (partidaIniciada) {
-        for (c = 0; c < brickColumnCount; c++) {
-            for (r = 0; r < brickRowCount; r++) {
-                bricks[c][r].status = 0;
-            }
-        }
-    }
-});
