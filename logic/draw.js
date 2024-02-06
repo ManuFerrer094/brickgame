@@ -42,8 +42,6 @@ window.onload = function() {
     drawButton("¿Quieres jugar?");
 };
 
-var ballStuckToPaddle = true;
-
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBricks(ctx, brickWidth, brickHeight, brickPadding, brickOffsetTop, brickOffsetLeft, bricks, brickRowCount, brickColumnCount);
@@ -55,32 +53,6 @@ function draw() {
     drawPowerUps(ctx, powerUps, powerUpWidth, powerUpHeight);
     updatePowerUps(powerUps, powerUpSpeed, powerUpEffectDuration);
     paddlePowerUpCollision();
-
-    if (ballStuckToPaddle) {
-        // Dibujar la pelota en la posición inicial enganchada al paddle
-        x = paddleX + paddleWidth / 2;
-        y = canvas.height - paddleHeight - ballRadius;
-    }
-
-    // Escuchar eventos de teclado para liberar la pelota
-    document.addEventListener("keydown", function(event) {
-        if ((event.keyCode === 32 || event.key === " ") && ballStuckToPaddle) { // Tecla "Espacio"
-            ballStuckToPaddle = false; // Liberar la pelota
-            // Asignar velocidades a las direcciones x e y para que la pelota se mueva hacia arriba y hacia la izquierda o la derecha
-            dx = Math.random() < 0.5 ? -2 : 2; // Dirección horizontal aleatoria
-            dy = -2; // Dirección vertical hacia arriba
-        }
-    });
-
-    // Escuchar eventos de ratón para liberar la pelota al hacer clic izquierdo
-    canvas.addEventListener("click", function() {
-        if (ballStuckToPaddle) {
-            ballStuckToPaddle = false; // Liberar la pelota
-            // Asignar velocidades a las direcciones x e y para que la pelota se mueva hacia arriba y hacia la izquierda o la derecha
-            dx = Math.random() < 0.5 ? -2 : 2; // Dirección horizontal aleatoria
-            dy = -2; // Dirección vertical hacia arriba
-        }
-    });
     
     if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
         dx = -dx;

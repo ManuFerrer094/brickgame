@@ -1,8 +1,33 @@
 var nivelActual = 1;
 var partidaIniciada = false;
+var ballStuckToPaddle = true;
 
 function collisionDetection() {
     var ladrillosRestantes = 0;
+
+    if (ballStuckToPaddle) {
+        // Dibujar la pelota en la posición inicial enganchada al paddle
+        x = paddleX + paddleWidth / 2;
+        y = canvas.height - paddleHeight - ballRadius;
+    }
+
+    // Escuchar eventos de teclado para liberar la pelota
+    document.addEventListener("keydown", function(event) {
+        if ((event.keyCode === 32 || event.key === " ") && ballStuckToPaddle) {
+            ballStuckToPaddle = false;
+            dx = Math.random() < 0.5 ? -2 : 2;
+            dy = -2;
+        }
+    });
+
+    // Escuchar eventos de ratón para liberar la pelota al hacer clic izquierdo
+    canvas.addEventListener("click", function() {
+        if (ballStuckToPaddle) {
+            ballStuckToPaddle = false;
+            dx = Math.random() < 0.5 ? -2 : 2;
+            dy = -2;
+        }
+    });
 
     for (c = 0; c < brickColumnCount; c++) {
         for (r = 0; r < brickRowCount; r++) {
@@ -82,5 +107,7 @@ function iniciarNuevoNivel() {
     resetearPelotaYPaleta();
     bricks = initBricksForLevel(nivelActual);
     partidaIniciada = false;
+    ballStuckToPaddle = true;
     cancelAnimationFrame(animationId);
 }
+
